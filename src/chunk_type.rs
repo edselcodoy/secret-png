@@ -45,7 +45,6 @@ impl ChunkType {
 
     /// Valid bytes are represented by the characters A-Z or a-z
     pub fn is_valid_byte(byte: u8) -> bool {
-       // (byte >= 65u8 && byte <= 90u8) || (byte >= 97u8 && byte <= 122u8)
        byte.is_ascii_lowercase() || byte.is_ascii_uppercase()
     }
 }
@@ -66,7 +65,8 @@ impl TryFrom<[u8; 4]> for ChunkType {
 impl fmt::Display for ChunkType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let str = str::from_utf8(&self.code).unwrap();
-        write!(f, "{}", str)
+        write!(f, "{}", str)?;
+        Ok(())
     }
 }
 
@@ -76,14 +76,14 @@ impl FromStr for ChunkType {
     fn from_str(s: &str) -> Result<Self> {
         let code = s.as_bytes();
         if code.len() != 4 {
-            Err("str length should be 4 bytes")?
+            Err("str length should be 4 bytes.")?
         }
         for byte in code {
             if !Self::is_valid_byte(*byte) {
-                Err("Invalid byte")?
+                Err(format!("{} is an invalid byte.", *byte as char))?
             }
         }
-        let arr: [u8; 4] = code[0..4].try_into().unwrap();
+        let arr: [u8; 4] = code[0..4].try_into()?;
         Ok(Self { code: arr })
     }
 }
