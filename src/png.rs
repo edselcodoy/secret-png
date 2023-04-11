@@ -101,7 +101,7 @@ impl TryFrom<&[u8]> for Png {
         reader.read_exact(&mut header)?;
 
         if header != Png::STANDARD_HEADER {
-            Err("Bad header found in file.")?
+            Err("Bad header found in file. Please make sure you are using a PNG file.")?
         }
         
         let mut png_vec = Vec::<Chunk>::new();
