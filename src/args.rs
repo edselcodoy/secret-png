@@ -16,7 +16,7 @@ pub enum PngMeArgs {
 pub struct EncodeArgs {
     #[structopt(parse(from_os_str), help="Path to the input PNG")]
     pub file_path: PathBuf,
-    #[structopt(help="4-byte chunk type, e.g. 'ruSt'")]
+    #[structopt(help="4-byte chunk type, e.g. 'coOl'")]
     pub chunk_type: String,
     #[structopt(help="Secret message")]
     pub message: String,
@@ -29,7 +29,7 @@ pub struct EncodeArgs {
 pub struct DecodeArgs {
     #[structopt(parse(from_os_str), help = "Path to the input PNG")]
     pub file_path: PathBuf,
-    #[structopt(help="4-byte chunk type, e.g. 'ruSt'")]
+    #[structopt(help="4-byte chunk type, e.g. 'coOl'")]
     pub chunk_type: String,
 }
 
@@ -38,7 +38,7 @@ pub struct DecodeArgs {
 pub struct RemoveArgs {
     #[structopt(parse(from_os_str), help = "Path to the input PNG")]
     pub file_path: PathBuf,
-    #[structopt(help="4-byte chunk type, e.g. 'ruSt'")]
+    #[structopt(help="4-byte chunk type, e.g. 'coOl'")]
     pub chunk_type: String,
 }
 
