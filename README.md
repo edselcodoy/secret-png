@@ -79,7 +79,7 @@ Example:
 ---
 
 If there is any parameter confusion, you can ask for help by
-```bash
+```
     secret-png <command> -h
 ```
 where `<command>` may be `encode`, `decode`, `remove`, or `print`.
