@@ -13,6 +13,7 @@ pub fn encode(args: EncodeArgs) -> Result<()> {
     let output = args.output_file.unwrap_or(args.file_path);
     png.append_chunk(new_chunk);
     fs::write(&output, &png.as_bytes())?;
+    println!("Secret message is encoded successfully.");
     Ok(())
 }
 
