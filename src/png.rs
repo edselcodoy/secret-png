@@ -84,7 +84,7 @@ impl Png {
     /// Returns this `Png` as a byte sequence.
     /// These bytes will contain the header followed by the bytes of all of the chunks.
     pub fn as_bytes(&self) -> Vec<u8> {
-        Png::STANDARD_HEADER
+        (*self.header())
         .into_iter()
         .chain(self.chunks().iter().flat_map(|chunk| chunk.as_bytes()))
         .collect()
@@ -101,7 +101,7 @@ impl TryFrom<&[u8]> for Png {
         reader.read_exact(&mut header)?;
 
         if header != Png::STANDARD_HEADER {
-            Err("Bad header.")?
+            Err("Bad header found in file.")?
         }
         
         let mut png_vec = Vec::<Chunk>::new();
