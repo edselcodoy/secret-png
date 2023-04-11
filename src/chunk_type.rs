@@ -61,14 +61,7 @@ impl TryFrom<[u8; 4]> for ChunkType {
                 Err(format!("{} is invalid.", byte))?
             }
         }
-        let chunk_type = Self { code: bytes };
-
-        if chunk_type.is_valid() {
-            Ok(chunk_type)
-        } else {
-            Err(format!("The reserved byte should be valid. The third character in the chunk type should be uppercase, e.g. 'coOl'."))?
-        }
-        
+        Ok( Self { code: bytes } )
     }
 }
 
@@ -88,9 +81,7 @@ impl FromStr for ChunkType {
         if code.len() != 4 {
             Err("Chunk type length should be 4 bytes.")?
         }
-
         let arr: [u8; 4] = code[..].try_into()?;
-
         Self::try_from(arr)
     }
 }
