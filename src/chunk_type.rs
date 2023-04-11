@@ -18,11 +18,13 @@ impl ChunkType {
     }
 
     /// Returns the property state of the first byte as described in the PNG spec
+    #[cfg(test)]
     pub fn is_critical(&self) -> bool {
         self.code[0].is_ascii_uppercase()
     }
 
     /// Returns the property state of the second byte as described in the PNG spec
+    #[cfg(test)]
     pub fn is_public(&self) -> bool {
         self.code[1].is_ascii_uppercase()
     }
@@ -33,6 +35,7 @@ impl ChunkType {
     }
 
     /// Returns the property state of the fourth byte as described in the PNG spec
+    #[cfg(test)]
     pub fn is_safe_to_copy(&self) -> bool {
         self.code[3].is_ascii_lowercase()
     }
@@ -58,7 +61,14 @@ impl TryFrom<[u8; 4]> for ChunkType {
                 Err(format!("{} is invalid.", byte))?
             }
         }
-        Ok(Self { code: bytes })
+        let chunk_type = Self { code: bytes };
+
+        if chunk_type.is_valid() {
+            Ok(chunk_type)
+        } else {
+            Err(format!("The reserved byte should be valid. The third character in the chunk type should be uppercase, e.g. 'coOl'."))?
+        }
+        
     }
 }
 
@@ -76,15 +86,12 @@ impl FromStr for ChunkType {
     fn from_str(s: &str) -> Result<Self> {
         let code = s.as_bytes();
         if code.len() != 4 {
-            Err("str length should be 4 bytes.")?
+            Err("Chunk type length should be 4 bytes.")?
         }
-        for byte in code {
-            if !Self::is_valid_byte(*byte) {
-                Err(format!("{} is an invalid byte.", *byte as char))?
-            }
-        }
-        let arr: [u8; 4] = code[0..4].try_into()?;
-        Ok(Self { code: arr })
+
+        let arr: [u8; 4] = code[..].try_into()?;
+
+        Self::try_from(arr)
     }
 }
 
